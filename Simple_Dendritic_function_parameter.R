@@ -31,12 +31,22 @@ source("./make_NEURON_synapse_data.R")
 source("./data_check.R")
 #[liner_estimation.R]               : シミュレーション結果の評価
 source("./liner_estimate.R")
+#[Result_Estimate.R]               : シミュレーション結果の評価
+source("./Result_Estimate.R")
+##[liner_estimation.R]               : シミュレーション結果の評価
+#source("./liner_estimate.R")
+#[return_result.R]               : シミュレーション結果の評価
+source("./return_result.R")
 #[penalty.R]                  : うまく形態生成ができなかった場合のpenaltyを与える関数
 source("./penalty.R")
-#[evolution.R]                : 評価値から次の世代を生成する関数
-source("./evolution.R")
+#[Simple_Morpho_penalty.R]                  : うまく形態生成ができなかった場合のpenaltyを与える関数
+source("./Simple_Morpho_penalty.R")
+#[Simple_evolution.R]                : 評価値から次の世代を生成する関数
+source("./Simple_evolution.R")
 #[calc_Conductance_ratio.R]   : コンダクタンスの含有率を計算するプログラム
 source("./calc_Conductance_ratio.R")
+#[calc_Conductance_amount.R]   : TREEのコンダクタンスの絶対量と最大値を計算する関数
+source("./calc_Conductance_amount.R")
 #[output_results.R]           : 結果をファイルに出力する関数
 source("./output_results.R")
 #[make_simul_parameter]       : シミュレーションで用いるパラメータのファイルを作成する関数
@@ -51,6 +61,8 @@ source("./calc_volume.R")
 source("./TREE_modify.R")
 #[TREE_clean.R]               : TREEのプロパティを初期化する関数
 source("./TREE_clean.R")
+#[Simple_CanSimulation.R]     : Simple TREEの全てのBranchの太さがFOURCE MIN DIAMを超えているかどうかを判定する関数
+source("./Simple_CanSimulation.R")
 
 
 #サンプルTREEの作成
@@ -59,8 +71,8 @@ source("branched_TREE.R")      #分岐したTREEを作成する
 
 
 #N_comp                      <- 40 #使用するコンパートメントの個数
-#sample_TREE <- liner_TREE
-sample_TREE <- branched_TREE
+sample_TREE <- liner_TREE
+#sample_TREE <- branched_TREE
 TREE <- sample_TREE()
 
 N_Segs <- length(TREE[[1]])
@@ -74,13 +86,16 @@ make_NEURON_morpho_conductance_data <- cmpfun(make_NEURON_morpho_conductance_dat
 make_NEURON_synapse_data <- cmpfun(make_NEURON_synapse_data)
 data_check <- cmpfun(data_check)
 estimate <- cmpfun(estimate)
+Morpho_penalty <- cmpfun(Simple_Morpho_penalty)
 penalty <- cmpfun(penalty)
 calc_Conductance_ratio <- cmpfun(calc_Conductance_ratio)
-evolution <- cmpfun(evolution)
+calc_Conductance_amount <- cmpfun(calc_Conductance_amount)
+Simple_evolution <- cmpfun(Simple_evolution)
 parallel_task <- cmpfun(parallel_task)
 sum_length <- cmpfun(sum_length)
 TREE_modify <- cmpfun(TREE_modify)
 TREE_clean <- cmpfun(TREE_clean)
+Simple_CanSimulation <- cmpfun(Simple_CanSimulation)
 
 ### 結果格納ディレクトリ ###
 RESULT_DATA_DIR                     <- paste("./",paste(include_conductances,collapse="_"),"_","Result/",sep="")
@@ -94,11 +109,11 @@ Prefix <- paste("SEED",RAND_SEED,"_","dt",DELTA_T,"_",paste(include_conductances
 ### テストのための変更
 if(THIS_IS_TEST){
   Prefix <- paste("test_",Prefix,sep="")
-  MAX_GENERATION                 <- 3                     # GAのMAX世代数
+  MAX_GENERATION                 <- 10                     # GAのMAX世代数
   ES_RAMDA                       <- 5                      # 次世代生成に用いる優秀な個体の数
   N_INDIVIDUAL                   <- 20                     # 1世代の個体数
   SELECT_PROB                    <- set_select_prob(ES_RAMDA,1)
-#  WITH_K <- TRUE
+  WITH_Ca <- TRUE
 }
 ###\テストのための変更
 

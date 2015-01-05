@@ -27,7 +27,7 @@ MULTI_GENERATION <- as.list(NULL)
 for(ID_IND in 1:N_INDIVIDUAL){
   Params <- Param_init(N_DENDRITE,N_Segs)
 
-  individual_TREE <- sample_TREE(N_comp)
+  individual_TREE <- sample_TREE()
 
   if(length(Params[[1]]) != length(Param_Labels)){
     print("Error! The Parameter length is not justified!\n")
@@ -43,12 +43,17 @@ for(ID_IND in 1:N_INDIVIDUAL){
                           OUTPUT_LOWER_TEST_FILE_NAME[ID_IND],
                           Params,
                           NULL,#SEED
-                          individual_TREE,
+                          individual_TREE,#TREE
+                          NULL,#TREE_Volume
+                          NULL,#Ca_Amount
+                          NULL,#K_Amount
                           NULL,#Estimate
                           -1,#Ratio
                           -1, #Parent
-                          -1)#RANK
-  names(INDIVIDUAL_DATA) <- MULTI_GENERATION_Labels
+                          -1,#RANK
+                          "Initial")#Result
+#  names(INDIVIDUAL_DATA) <- MULTI_GENERATION_Labels
+  names(INDIVIDUAL_DATA) <- RERATIVE_MULTI_GENERATION_Labels
   MULTI_GENERATION[[ID_IND]] <- INDIVIDUAL_DATA
 }
 
@@ -76,6 +81,7 @@ for(I_GENER in Start_GENER:MAX_GENERATION){
   #形態情報から座標計算 シナプス付加 シミュレーション可能かの判断、シミュレーション実行までを行う
   MULTI_GENERATION <- foreach(one_please=MULTI_GENERATION) %dopar% parallel_task(one_please)
 #  MULTI_GENERATION <- lapply(MULTI_GENERATION,parallel_task)
+  MULTI_GENERATION <- Result_Estimate(MULTI_GENERATION)
 
   ESTIMATION <- t(sapply(MULTI_GENERATION,function(INDIVIDUAL_DATA){
     return(c(INDIVIDUAL_DATA[["ID_IND"]],INDIVIDUAL_DATA[["Estimate"]]))
@@ -109,26 +115,28 @@ for(I_GENER in Start_GENER:MAX_GENERATION){
 
     #GAによるパラメータ変更 evolution関数の中で、個体のTREEを削除する
   if(I_GENER < MAX_GENERATION){    #最終世代を変更せずに取り出す為に、最後の一回は進化を行わない
-    MULTI_GENERATION <- evolution(MULTI_GENERATION,Good_ID_ES[,1],Good_ID_ES[1,1])
+    MULTI_GENERATION <- Simple_evolution(MULTI_GENERATION,Good_ID_ES[,1],Good_ID_ES[1,1])
   }
 
 }# MAIN_LOOP終了
 
-MULTI_GENERATION <- lapply(MULTI_GENERATION,function(Individual_Data){
-  TREE <- Individual_Data[["TREE"]]
-  Params <- Individual_Data[["Params"]]
-  TREE <- TREE_modify(Params,TREE)
-  Individual_Data[["TREE"]] <- TREE
-  return(Individual_Data)})
+## MULTI_GENERATION <- lapply(MULTI_GENERATION,function(Individual_Data){
+##   TREE <- Individual_Data[["TREE"]]
+##   Params <- Individual_Data[["Params"]]
+##   TREE <- TREE_modify(Params,TREE)
+##   Individual_Data[["TREE"]] <- TREE
+##   return(Individual_Data)})
 
-Best_Datas <- lapply(Best_Datas,function(Individual_Data){
-  TREE <- Individual_Data[["TREE"]]
-  Params <- Individual_Data[["Params"]]
-  TREE <- TREE_modify(Params,TREE)
-  Individual_Data[["TREE"]] <- TREE
-  return(Individual_Data)})
+## Best_Datas <- lapply(Best_Datas,function(Individual_Data){
+##   TREE <- Individual_Data[["TREE"]]
+##   Params <- Individual_Data[["Params"]]
+##   TREE <- TREE_modify(Params,TREE)
+##   Individual_Data[["TREE"]] <- TREE
+##   return(Individual_Data)})
 
 #display_conductance_on_morphology(Best_Datas[[length(Best_Datas)]][["TREE"]],"Ca_conductance")
+#print(lapply(Best_Datas,"[[","Params"))
+
 
 ## TREE <- MULTI_GENERATION[[length(MULTI_GENERATION)]][["TREE"]]
 ## Soma_Conductance <- list(0,0)

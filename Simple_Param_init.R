@@ -7,7 +7,7 @@ Param_init <- function(N_DENDRITE,N_Segs){ #確率的にランダムなパラメ
                                         #Stem_diameter (Const)
                   runif(1,min = 0.2,max = 10),
 #                                        #taper rate
-#                  runif(1,min = 0.2,max = 1),
+                  runif(1,min = 10^(-5),max = 1),
                                         #K_Conductance
                   runif(N_Segs,min = 0,max = MAX_PEAK)*WITH_K,
                                         #Ca_Conductance
