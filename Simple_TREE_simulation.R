@@ -15,7 +15,7 @@ source(paste(Dir,"calc_Conductance_amount.R",sep=""))
 WITH_K <- FALSE
 WITH_Ca <- TRUE
 RAND_SEED <- 1
-DELTA_T <- 5
+DELTA_T <- 20
 Function_ratio <- 75
 Conductance_ratio <- 0
 Morphology_ratio <- 100 - (Function_ratio + Conductance_ratio*(WITH_K || WITH_Ca))
@@ -40,7 +40,7 @@ cat("Delta_T:",DELTA_T,"\n")
 cat("SEED:",RAND_SEED,"\n")
 cat("inciude conductance:",name,"\n")
 
-Data_Dir <- paste("./",name,"_Result/test_",sep="")
+Data_Dir <- paste("./",name,"_Result/",sep="")
 
 input_filename <- paste(Data_Dir,"SEED",RAND_SEED,"_","dt",DELTA_T,"_",paste(name,collapse="_"),"_",paste("FR",Function_ratio,sep=""),"_",extra_prefix,"_Best_Datas.xdr",sep="")
 cat("input file:",input_filename,"\n")
@@ -76,13 +76,18 @@ for(i in GENERATION){
       round(100*K_Ca_Conductace[2]/K_Ca_Conductace[4],digits=3),"(%)\n")
 
   plot.new()
-  par(mfrow=c(1,3))
+  par(mfrow=c(1,2),
+      cex=1.3,
+      lwd=3)
+
   if(WITH_Ca){
     Upper_Dend_Ca <- sapply(TREE[[1]],"[[","Ca_conductance")
     Lower_Dend_Ca <- sapply(TREE[[2]],"[[","Ca_conductance")
 
     plot(rbind(c(0,0),c(length(TREE[[1]]),max(Upper_Dend_Ca,Lower_Dend_Ca))),
-         type="n")
+         type="n",
+         xlab=expression(paste("length [",mu,"m]",sep="")),
+         ylab=expression(paste("conductance [S/c",m^2,"]",sep="")))
 
     lines(Upper_Dend_Ca,col="red")
     lines(Lower_Dend_Ca,col="blue")

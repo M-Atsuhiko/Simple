@@ -1,0 +1,1 @@
+../Gausian/calc_Conductance_amount.R
