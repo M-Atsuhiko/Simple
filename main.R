@@ -120,33 +120,6 @@ for(I_GENER in Start_GENER:MAX_GENERATION){
 
 }# MAIN_LOOP終了
 
-## MULTI_GENERATION <- lapply(MULTI_GENERATION,function(Individual_Data){
-##   TREE <- Individual_Data[["TREE"]]
-##   Params <- Individual_Data[["Params"]]
-##   TREE <- TREE_modify(Params,TREE)
-##   Individual_Data[["TREE"]] <- TREE
-##   return(Individual_Data)})
-
-## Best_Datas <- lapply(Best_Datas,function(Individual_Data){
-##   TREE <- Individual_Data[["TREE"]]
-##   Params <- Individual_Data[["Params"]]
-##   TREE <- TREE_modify(Params,TREE)
-##   Individual_Data[["TREE"]] <- TREE
-##   return(Individual_Data)})
-
-#display_conductance_on_morphology(Best_Datas[[length(Best_Datas)]][["TREE"]],"Ca_conductance")
-#print(lapply(Best_Datas,"[[","Params"))
-
-
-## TREE <- MULTI_GENERATION[[length(MULTI_GENERATION)]][["TREE"]]
-## Soma_Conductance <- list(0,0)
-## names(Soma_Conductance) <- Soma_Conductance_Labels
-
-## Parent <- MULTI_GENERATION[[length(MULTI_GENERATION)]][["Parent"]]
-## print(TREE)
-## print(Parent)
-## display_conductance_on_morphology(TREE,Soma_Conductance,"Ca_conductance")
-
 output_results(Generation_Estimates,
                Generation_Performance,
                Best_Datas,

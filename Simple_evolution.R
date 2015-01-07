@@ -118,22 +118,51 @@ Simple_mutation <- function(individual){
       new_Taper <- min(max(Taper + rnorm(1,mean=0,sd=MUTATION_taper_rate)
                            ,0),1)
     }
-    
+
     if(Mutation_or_Not[3]){
-      new_K_Conductances <- c()
-      for(conductance in K_Conductances){
-        new_K_Conductances <- c(new_K_Conductances,
-                                max(min(conductance + rnorm(1,mean=0,sd=MUTATION_K_peak),K_MAX),0))*WITH_K
-      }
+      
+      K_Mutation <- dnorm(1:length(K_Conductances)/length(K_Conductances)
+                          ,mean=runif(1,max=1,min=0),
+                          sd=runif(1,max=1.5,min=10^(-3)))
+
+      K_peak <- runif(1,min = -K_MAX,max = K_MAX)*WITH_K
+      
+      new_K_Conductances <- K_Conductances + (K_Mutation/max(K_Mutation))*K_peak
+
+      new_K_Conductances <- sapply(new_K_Conductances,function(K_Cond){
+        return(max(min(K_Cond,MAX_PEAK),0))
+      })
     }
     
     if(Mutation_or_Not[4]){
-      new_Ca_Conductances <- c()
-      for(conductance in Ca_Conductances){
-        new_Ca_Conductances <- c(new_Ca_Conductances,
-                                 max(min(conductance + rnorm(1,mean=0,sd=MUTATION_Ca_peak),Ca_MAX),0))*WITH_Ca
-      }
+      Ca_Mutation <- dnorm(1:length(Ca_Conductances)/length(Ca_Conductances)
+                          ,mean=runif(1,max=1,min=0),
+                          sd=runif(1,max=1.5,min=10^(-3)))
+
+      Ca_peak <- runif(1,min = -Ca_MAX,max = Ca_MAX)*WITH_Ca
+
+      new_Ca_Conductances <- Ca_Conductances + (Ca_Mutation/max(Ca_Mutation))*Ca_peak
+
+      new_Ca_Conductances <- sapply(new_Ca_Conductances,function(Ca_Cond){
+        return(max(min(Ca_Cond,MAX_PEAK),0))
+      })
     }
+    
+    ## if(Mutation_or_Not[3]){
+    ##   new_K_Conductances <- c()
+    ##   for(conductance in K_Conductances){
+    ##     new_K_Conductances <- c(new_K_Conductances,
+    ##                             max(min(conductance + rnorm(1,mean=0,sd=MUTATION_K_peak),K_MAX),0))*WITH_K
+    ##   }
+    ## }
+    
+    ## if(Mutation_or_Not[4]){
+    ##   new_Ca_Conductances <- c()
+    ##   for(conductance in Ca_Conductances){
+    ##     new_Ca_Conductances <- c(new_Ca_Conductances,
+    ##                              max(min(conductance + rnorm(1,mean=0,sd=MUTATION_Ca_peak),Ca_MAX),0))*WITH_Ca
+    ##   }
+    ## }
 
     new_Param<- list(new_diam,
                      new_Taper,
