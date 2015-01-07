@@ -130,7 +130,7 @@ Simple_mutation <- function(individual){
       new_K_Conductances <- K_Conductances + (K_Mutation/max(K_Mutation))*K_peak
 
       new_K_Conductances <- sapply(new_K_Conductances,function(K_Cond){
-        return(max(min(K_Cond,MAX_PEAK),0))
+        return(max(min(K_Cond,K_MAX),0))
       })
     }
     
@@ -144,7 +144,7 @@ Simple_mutation <- function(individual){
       new_Ca_Conductances <- Ca_Conductances + (Ca_Mutation/max(Ca_Mutation))*Ca_peak
 
       new_Ca_Conductances <- sapply(new_Ca_Conductances,function(Ca_Cond){
-        return(max(min(Ca_Cond,MAX_PEAK),0))
+        return(max(min(Ca_Cond,Ca_MAX),0))
       })
     }
     

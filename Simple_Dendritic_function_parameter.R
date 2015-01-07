@@ -63,14 +63,14 @@ source("./TREE_modify.R")
 source("./TREE_clean.R")
 #[Simple_CanSimulation.R]     : Simple TREEの全てのBranchの太さがFOURCE MIN DIAMを超えているかどうかを判定する関数
 source("./Simple_CanSimulation.R")
+#[set_Upper_or_Lower_or_Other.R] : 上下の枝の名前付けを行う関数
+source("set_Upper_or_Lower_or_Other.R")
 
 
 #サンプルTREEの作成
 source("liner_TREE.R")         #一直線のTREEを作成する
 source("branched_TREE.R")      #分岐したTREEを作成する
 
-
-#N_comp                      <- 40 #使用するコンパートメントの個数
 sample_TREE <- liner_TREE
 #sample_TREE <- branched_TREE
 TREE <- sample_TREE()
@@ -126,4 +126,3 @@ ESTIMATE_GRAPH                 <- paste(RESULT_GRAPH_DIR,Prefix,"estimate_graph.
 PERFORMANCE_GRAPH              <- paste(RESULT_GRAPH_DIR,Prefix,"performance_graph.eps",sep="")  # 世代毎にどの評価関数で評価されたかをまとめたグラフ
 GENERATION_ESTIMATE_FILE       <- paste(RESULT_DATA_DIR,Prefix,"MAX_MEAN_SE.xdr",sep="")
 LAST_GENERATION_FILE           <- paste(RESULT_DATA_DIR,Prefix,"LAST_GENERATION.xdr",sep="")
-
