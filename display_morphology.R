@@ -7,7 +7,7 @@ display_dendrite <- function(Dendrite,Color){
     diam <- Dendrite[[i]][["diam"]]
     path_length <- Dendrite[[i]][["path_leng"]]
     Branch_length <- Dendrite[[i]][["length"]]
-    Dendrite_cyl <- cylinder3d(Branch_coordinate,closed = -2,radius = diam,sides = 100)
+    Dendrite_cyl <- cylinder3d(Branch_coordinate,closed = -2,radius = diam/2,sides = 100)
     shade3d(Dendrite_cyl,color = Color,override=TRUE)
 #    rgl.texts(Branch_coordinate[2,],text=paste(path_length)) #path lengthが正しいかテスト
 #    rgl.texts((Branch_coordinate[2,] - Branch_coordinate[1,])/2 + Branch_coordinate[1,],text=paste(Branch_length),color="blue")

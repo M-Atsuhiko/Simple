@@ -14,9 +14,9 @@ source(paste(Dir,"calc_Conductance_amount.R",sep=""))
 
 WITH_K <- FALSE
 WITH_Ca <- TRUE
-RAND_SEED <- 1
-DELTA_T <- 5
-Function_ratio <- 75
+RAND_SEED <- 2
+DELTA_T <- 25
+Function_ratio <- 100
 Conductance_ratio <- 0
 Morphology_ratio <- 100 - (Function_ratio + Conductance_ratio*(WITH_K || WITH_Ca))
 extra_prefix <- paste("Determine_Gaus_",Function_ratio,"_",Conductance_ratio,sep="")

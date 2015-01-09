@@ -110,8 +110,8 @@ Simple_mutation <- function(individual){
     new_Ca_Conductances <- Ca_Conductances
     
     if(Mutation_or_Not[1]){
-      new_diam <- max(diam + rnorm(1,mean=0,sd=MUTATION_alfa_taper_diam_SD),
-                      FOURCE_MIN_DIAM)
+      new_diam <- min(max(diam + rnorm(1,mean=0,sd=MUTATION_alfa_taper_diam_SD),
+                      FOURCE_MIN_DIAM),SOMA_DIAM)
     }
     
     if(Mutation_or_Not[2]){
