@@ -14,10 +14,10 @@ source(paste(Dir,"calc_Conductance_amount.R",sep=""))
 
 WITH_K <- FALSE
 WITH_Ca <- TRUE
-RAND_SEED <- 2
-DELTA_T <- 25
-Function_ratio <- 100
-Conductance_ratio <- 0
+RAND_SEED <- 3
+DELTA_T <- 15
+Function_ratio <- 75
+Conductance_ratio <- 5
 Morphology_ratio <- 100 - (Function_ratio + Conductance_ratio*(WITH_K || WITH_Ca))
 extra_prefix <- paste("Determine_Gaus_",Function_ratio,"_",Conductance_ratio,sep="")
 
@@ -55,7 +55,6 @@ for(i in GENERATION){
 
   TREE <- Best_Datas[[i]][["TREE"]]
   Params <- Best_Datas[[i]][["Params"]]
-  print(Params)
 
   filename <- paste("~/Desktop/",name,"_EPSP.eps",sep="")
 
